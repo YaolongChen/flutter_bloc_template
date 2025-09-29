@@ -1,5 +1,6 @@
+import '../../util/result.dart';
 import '../entities/user.dart';
 
 abstract class UserRepository {
-  Future<User> getUser();
+  Future<Result<User>> getUser();
 }

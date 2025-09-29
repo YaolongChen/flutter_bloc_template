@@ -17,7 +17,7 @@ class LoginScreen extends StatelessWidget {
       body: Padding(
         padding: dimens.screenPadding,
         child: Form(
-          child: BlocConsumer<LoginBloc, LoginState>(
+          child: BlocBuilder<LoginBloc, LoginState>(
             builder: (BuildContext context, LoginState state) {
               final loading = state is LoginLoading;
               return Column(
@@ -61,7 +61,6 @@ class LoginScreen extends StatelessWidget {
                 ],
               );
             },
-            listener: (BuildContext context, LoginState state) {},
           ),
         ),
       ),

@@ -1,9 +1,11 @@
+import '../../util/result.dart';
+
 abstract class AuthRepository {
-  Stream<bool?> get isSignedIn;
+  Stream<bool> get isSignedIn;
 
-  Future<void> signIn(String email, String password);
+  Future<Result<void>> signIn(String email, String password);
 
-  Future<void> signOut();
+  Future<Result<void>> signOut();
 
   void dispose();
 }

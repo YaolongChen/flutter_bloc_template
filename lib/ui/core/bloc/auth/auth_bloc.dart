@@ -1,9 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_bloc_template/domain/repositories/auth_repository.dart';
-import 'package:flutter_bloc_template/domain/repositories/user_repository.dart';
-import 'package:flutter_bloc_template/ui/core/bloc/auth/auth_event.dart';
-import 'package:flutter_bloc_template/ui/core/bloc/auth/auth_state.dart';
+import '../../../../domain/entities/user.dart';
+import '../../../../domain/repositories/auth_repository.dart';
+import '../../../../domain/repositories/user_repository.dart';
+import '../../../../util/result.dart';
+import 'auth_event.dart';
+import 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc({
@@ -37,16 +39,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       onData: (isSignedIn) async {
         switch (isSignedIn) {
           case true:
-            try {
-              final user = await _userRepository.getUser();
-              emit(AuthAuthenticated(user: user));
-            } catch (_) {
-              emit(AuthUnauthenticated());
+            final user = await _userRepository.getUser();
+            switch (user) {
+              case Ok<User>():
+                emit(AuthAuthenticated(user: user.value));
+              case Error<User>():
+                emit(AuthUnauthenticated());
             }
           case false:
             emit(AuthUnauthenticated());
-          case null:
-            emit(AuthUnknown());
         }
       },
     );

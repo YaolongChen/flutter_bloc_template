@@ -26,6 +26,7 @@ void main() {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
+            lazy: false,
             create: (context) => AuthBloc(
               authRepository: context.read(),
               userRepository: context.read(),
@@ -41,14 +42,19 @@ void main() {
   );
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
 
+  @override
+  State<MainApp> createState() => MainAppState();
+}
+
+class MainAppState extends State<MainApp> with RouterMixin {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
       theme: AppTheme.lightTheme,
-      routerConfig: router(context.read()),
+      routerConfig: router,
     );
   }
 }
